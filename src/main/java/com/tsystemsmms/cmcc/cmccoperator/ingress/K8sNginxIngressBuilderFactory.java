@@ -10,21 +10,16 @@
 
 package com.tsystemsmms.cmcc.cmccoperator.ingress;
 
+import com.tsystemsmms.cmcc.cmccoperator.crds.IngressTls;
 import com.tsystemsmms.cmcc.cmccoperator.targetstate.TargetState;
 
-public class OnlyLangCmccIngressGeneratorFactory implements CmccIngressGeneratorFactory {
-    private final IngressBuilderFactory ingressBuilderFactory;
-
-    public OnlyLangCmccIngressGeneratorFactory(IngressBuilderFactory ingressBuilderFactory) {
-        this.ingressBuilderFactory = ingressBuilderFactory;
-    }
-
+public class K8sNginxIngressBuilderFactory implements IngressBuilderFactory {
     @Override
-    public CmccIngressGenerator instance(TargetState targetState, String serviceName) {
-        return new OnlyLangCmccIngressGenerator(ingressBuilderFactory, targetState, serviceName);
+    public IngressBuilder builder(TargetState targetState, String name, String hostname, IngressTls tls) {
+        return new K8sNginxIngressBuilder(targetState, name, hostname, tls);
     }
 
     public String toString() {
-        return "Only Language";
+        return "Kubernetes NGINX";
     }
 }

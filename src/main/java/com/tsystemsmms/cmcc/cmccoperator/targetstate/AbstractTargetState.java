@@ -115,6 +115,10 @@ public abstract class AbstractTargetState implements TargetState {
         log.debug("[{}] Updating dependent resources: {} new, {} updated, {} abandoned resources",
                 getContextForLogging(),
                 newResources.size(), changedResources.size(), abandonedResources.size());
+        if (abandonedResources.size() > 0)
+            log.debug("[{}] deleting\n    {}", getContextForLogging(), abandonedResources.stream().map(r -> r.getKind() + "/" + r.getMetadata().getName()).collect(Collectors.joining("\n    ")));
+        if (newResources.size() > 0)
+            log.debug("[{}] creating\n    {}", getContextForLogging(), newResources.stream().map(r -> r.getKind() + "/" + r.getMetadata().getName()).collect(Collectors.joining("\n    ")));
 
         abandonedResources.forEach(r -> getKubernetesClient().resource(r).withPropagationPolicy(DeletionPropagation.BACKGROUND).delete());
 

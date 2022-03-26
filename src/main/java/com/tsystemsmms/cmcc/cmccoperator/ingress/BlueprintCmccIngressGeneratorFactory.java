@@ -24,4 +24,8 @@ public class BlueprintCmccIngressGeneratorFactory implements CmccIngressGenerato
     public CmccIngressGenerator instance(TargetState targetState, String serviceName) {
         return new BlueprintCmccIngressGenerator(ingressBuilderFactory, targetState, serviceName);
     }
+
+    public String toString() {
+        return "Blueprint";
+    }
 }

@@ -19,7 +19,13 @@ import io.fabric8.kubernetes.api.model.networking.v1.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class NginxIngressBuilder extends AbstractIngressBuilder {
+/**
+ * Implements an Ingress builder that generates Ingress and Middleware resources suitable for the Traefik ingress
+ * controller.
+ *
+ * https://doc.traefik.io/traefik/providers/kubernetes-ingress/
+ */
+public class TraefikIngressBuilder extends AbstractIngressBuilder {
     private final String hostname;
     private final String name;
     private final TargetState targetState;
@@ -27,7 +33,7 @@ public class NginxIngressBuilder extends AbstractIngressBuilder {
     private final HashSet<Path> paths = new HashSet<>();
     private final IngressTls tls;
 
-    public NginxIngressBuilder(TargetState targetState, String name, String hostname, IngressTls tls) {
+    public TraefikIngressBuilder(TargetState targetState, String name, String hostname, IngressTls tls) {
         this.hostname = hostname;
         this.name = name;
         this.targetState = targetState;
@@ -61,7 +67,7 @@ public class NginxIngressBuilder extends AbstractIngressBuilder {
         return Collections.singletonList(new io.fabric8.kubernetes.api.model.networking.v1.IngressBuilder()
                 .withMetadata(metadata)
                 .withSpec(new IngressSpecBuilder()
-                        .withIngressClassName("nginx")
+                        .withIngressClassName("traefik")
                         .withTls(ingressTls)
                         .withRules(new IngressRuleBuilder()
                                 .withHost(hostname)
